@@ -1,11 +1,21 @@
-import { Suspense } from "react";
-import { useRoutes } from "react-router-dom";
-/* Thius is fine: https://github.com/hannoeru/vite-plugin-pages/issues/120 */
-/** @ts-ignore */
-import routes from "~react-pages";
+import { Suspense } from 'react';
+import { useRoutes, Navigate, Route, Routes } from 'react-router-dom';
+import EnhancedColorVisualizer from './components/EnhancedColorVisualizer'; // Import the visualizer
 
 function App() {
-  return <Suspense fallback={<p>Loading...</p>}>{useRoutes(routes)}</Suspense>;
+  const element = useRoutes([
+    // Redirect from the root path to /audio-vis
+    { path: '/', element: <Navigate to="/audio-vis" replace /> },
+    // Route for the audio visualizer
+    { path: '/audio-vis', element: <EnhancedColorVisualizer /> },
+    // ... other routes you might have
+  ]);
+
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      {element}
+    </Suspense>
+  );
 }
 
 export default App;
